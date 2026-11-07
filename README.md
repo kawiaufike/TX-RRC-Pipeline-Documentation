@@ -1,12 +1,13 @@
-# TX-RRC-Pipeline-Documentation
-This project documents the steps taken to ingest a massive 12.6 GB .dsv fact table, and discovering the accompanying dimension tables that would assist in creating a practical report.
+# Texas RRC Production Analytics Pipeline & Dashboard
 
-## 📐 Data Architecture & Modeling
+[📊 Click Here to View the Live Interactive Power BI Dashboard](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmItYjdhZC00NDVlLThlZWItYzg3MjU4Y2JlMzRhIiwidCI6IjA4NmQ3ZjlmLWNmNTktNDFhZS04YmVmLTdjNDYxZjNkYmEzNSJ9)  
 
-### Schema Evolution & Pivots
+## 📌 Executive Summary
+This enterprise-grade portfolio project demonstrates an end-to-end data engineering and business intelligence pipeline utilizing public datasets from the **Texas Railroad Commission (RRC)**. The objective was to ingest, clean, and model **33.8 GB of raw, pipe-delimited (.dsv) text data** containing over **79 million rows** of historical upstream production records to deliver a highly responsive reporting suite optimized for county and operator benchmarking.
 
-During the initial extraction, transformation, and loading (ETL) phase, several critical architectural pivots were executed to optimize performance over a massive **79M+ row dataset** totaling **33.8 GB** of raw Texas Railroad Commission (RRC) data:
+Faced with massive file footprints that exceeded traditional hardware processing limits, the project architecture successfully pivoted from Excel-driven extraction to a fully relational **Star Schema in Power BI**. Key engineering milestones achieved include:
+* **Advanced Data Cleansing:** Resolving character encoding mismatches, header promotion anomalies, and trailing whitespace variations across 79M+ rows in Power Query.
+* **Many-to-Many Resolution:** Engineering custom, unique dimension bridge tables (`OG_OPERATOR_DW_DATA_TABLE` and `GP_DISTRICT_DATA_TABLE`) to guarantee deterministic 1-to-Many filter propagation and eliminate circular dependency risks.
+* **Custom Time-Intelligence Logic:** Bypassing traditional daily DAX time modifiers to construct variable-driven cumulative Year-to-Date (YTD) and Month-over-Month (MoM) growth calculations mapped to a condensed monthly integer grain (`YYYYMM`).
 
-1. **Platform Pivot (Excel to Power BI):** Initial attempts to process multi-gigabyte files inside Excel proved highly inefficient beyond basic data inspection. The architecture was shifted completely to Power BI to leverage its robust Power Query engine and VertiPaq columnar compression.
-2. **Schema Optimization:** Out of the 16 original RRC files, the dataset was isolated down to three essential source files, completely removing redundant pre-aggregated tables (e.g., `OG_COUNTY_LEASE_CYCLE_DATA_TABLE`) to save memory and eliminate circular dependency risks.
-3. **Many-to-Many Resolution:** Direct connections from the raw operator and county data files to the primary fact table would have triggered highly problematic Many-to-Many relationships. To achieve a clean relational model, two dedicated dimension bridge tables were engineered to establish highly performant, deterministic connections.
+
