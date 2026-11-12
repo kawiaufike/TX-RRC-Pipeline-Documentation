@@ -1,10 +1,3 @@
----
-title: "RRC_Pipeline_Documentation"
-author: "Dennis P Johnson"
-date: "2026-11-05"
-output: html_document
----
-
 # Data Engineering & Ingestion Pipeline Documentation
 ## Texas Railroad Commission (RRC) Historical Production Data Pipeline
 
@@ -12,14 +5,10 @@ output: html_document
 **Final Dataset Size:** 156,586,309 Rows (Fact Aggregated)  
 **Target Architecture:** Power BI Columnar VertiPaq Data Model  
 
----
-
 ### 1. Executive Summary
 This document details the engineering steps taken to ingest, clean, and model the definitive historical oil and gas production backend database provided by the Railroad Commission of Texas (RRC). Due to the staggering volume of this dataset—culminating in over 156 million rows across multiple fact tables spanning over 33 years—traditional spreadsheet applications completely lock up or truncate rows natively. This data engineering pipeline establishes an optimal, reproducible framework utilizing Power Query and the VertiPaq database engine to securely store, schema-optimize, and query massive data lakes without memory exhaustion or code corruption.
 
 Portfolio link: [Click Here](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmItYjdhZC00NDVlLThlZWItYzg3MjU4Y2JlMzRhIiwidCI6IjA4NmQ3ZjlmLWNmNTktNDFhZS04YmVmLTdjNDYxZjNkYmEzNSJ9)
-
----
 
 ### 2. Ingestion Pipeline Iteration Log
 
@@ -40,8 +29,6 @@ Portfolio link: [Click Here](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmIt
   * *Methodology:* Purged the corrupted stream. Removed the automated 'Changed Type' compiler step entirely within the Advanced Editor and cast every field explicitly as Text. This shifted the load logic from evaluation to pure ingestion.
   * *Result:* CRITICAL SUCCESS. The pipeline safely processed 79,374,069 rows with exactly zero errors, loading the 12.6 GB primary matrix securely into memory.
 
----
-
 ### 3. Core Technical Implementations
 * **Power Query Custom M-Code Delimiter Signature:**
   ```powerquery
@@ -49,14 +36,10 @@ Portfolio link: [Click Here](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmIt
   ```
 * **Infrastructural Limit Overrides:** Deployed an Online Analytical Processing (OLAP) connection model directly into Power BI's Data Model. The underlying VertiPaq engine converts flat text rows into highly compressed vertical memory segments, allowing fast aggregations of millions of rows.
 
----
-
 ### 4. Advanced Relational Architecture & Conformed Dimensions
 * **Multi-Fact Integration:** The architecture utilizes a secondary transactional matrix: `OG_COUNTY_LEASE_CYCLE_DATA_TABLE` (77,212,240 rows), breaking down historical production at the intersection of county boundaries. The full model holds 156.5M+ records.
 * **Many-to-Many Resolution:** Bypassed the engine limitation of connecting two 70M+ row fact tables by normalizing the schema upstream. Ingested `OG_REGULATORY_LEASE_DW_DATA_TABLE`, applied a de-duplication pipeline step in Power Query to reduce records down to 365,707 unique leases, and deployed it as a conformed master dimension.
 * **Geographic Mapping & Validation:** Integrated `GP_COUNTY_DATA_TABLE` using a Power Query de-duplication step to establish a clean One-to-Many (`1:*`) relationship down to the county fact table. Verified architectural integrity via a dual-fact aggregation test, yielding 100% identical totals across both data streams.
-
----
 
 ### 5. Visual Layer Troubleshooting & DAX Optimization
 * **The 1996 Filter Trap:** During initial reporting, standard iterations like `MINX` and alphabetical text sorting `MIN` natively hit an optimization wall, returning a frozen value of `1996` despite the physical presence of historical data going back to `1993` in the raw data view.
@@ -70,14 +53,10 @@ Portfolio link: [Click Here](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmIt
   )
   ```
 
----
-
 ### 6. Phase Transition: Pivoting from Excel to Power BI
 
 * **Initial Fact Table Optimization:** Attempted initial file size reduction on the primary production table (`OG_LEASE_CYCLE_DATA_TABLE`). Kept only 8 critical columns out of 32, converted text types to whole numbers for numeric values, and applied a `TRIM` function to text columns to remove whitespace.
 * **Architectural Pivot:** During this initial phase, it became clear that processing multi-gigabyte Texas RRC files in Excel was highly inefficient and time-consuming beyond basic data extraction. To build a scalable solution, the project architecture was shifted entirely to Power BI to leverage its robust Power Query engine and VertiPaq compression.
-
----
 
 ### 7. Power BI Data Engineering & ETL Pipeline
 
@@ -94,8 +73,6 @@ Portfolio link: [Click Here](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmIt
   * **Iteration 3 (Successful File Ingestion & Transformation):** Isolated the `OG_LEASE_CYCLE_DATA_TABLE.dsv` fact table and established a clean, reproducible transformation pipeline:
     * Reduced the total column footprint from 32 down to 9 essential metrics.
     * Converted high-cardinality numeric identifiers and production volumes to `Int64` whole numbers and consolidated `CYCLE_YEAR` and `CYCLE_MONTH` into a unified `Cycle_Date` column for optimal VertiPaq compression.
-
----
 
 ### 8. Model Refactoring, Spatial Key Engineering & Data Quality Audit
 
@@ -115,8 +92,6 @@ Portfolio link: [Click Here](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmIt
 * **Mainframe Surrogate Keys & Multi-District Anomaly Audit:**
   * Reconciled the offset between legacy mainframe surrogate IDs (`DISTRICT_NO` `1`–`14`, `20`) and true regulatory district codes (`DISTRICT_NAME` `01`–`10`, `6E`, `7B`, `7C`, `8A`, `20`) in `GP_DISTRICT_DATA_TABLE`.
   * Built a dedicated **Data Quality & Audit** hidden report page featuring a cross-referenced `FIPS_Code` exception matrix to differentiate legitimate multi-district geological overlaps (such as **DeWitt County** straddling Districts 01 and 02 along the Eagle Ford trend) from isolated historical filing miscodes (such as **Roberts County Oil Lease `26455`** reporting 13,343 BBL under District 03 in 2013).
-
----
 
 ### 9. Core DAX Measure Reference Appendix
 
