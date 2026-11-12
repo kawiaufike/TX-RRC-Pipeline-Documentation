@@ -1,8 +1,8 @@
 # Data Engineering & Ingestion Pipeline Documentation
 ## Texas Railroad Commission (RRC) Historical Production Data Pipeline
 
-**Analyst:** Dennis P Johnson Portfolio Project\  
-**Final Dataset Size:** 156,586,309 Rows (Fact Aggregated)\  
+**Analyst:** Dennis P Johnson Portfolio Project  
+**Final Dataset Size:** 156,586,309 Rows (Fact Aggregated)  
 **Target Architecture:** Power BI Columnar VertiPaq Data Model  
 
 ### 1. Executive Summary
