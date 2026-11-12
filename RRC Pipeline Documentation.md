@@ -2,9 +2,10 @@
 ## Texas Railroad Commission (RRC) Historical Production Data Pipeline
 ### Portfolio Project
 
-**Analyst:** Dennis P Johnson\ 
-**Final Dataset Size:** 156,586,309 Rows (Fact Aggregated)\  
-**Target Architecture:** Power BI Columnar VertiPaq Data Model  
+**Analyst:** Dennis P Johnson\
+**Dataset Size, Version 1:** 156,586,309 Rows (Fact Aggregated)\
+**Dataset Size, Version 2:** 77,212,240 Rows (Fact Single Table)\
+**Target Architecture:** Power BI Columnar VertiPaq Data Model   
 
 ### 1. Executive Summary
 This document details the engineering steps taken to ingest, clean, and model the definitive historical oil and gas production backend database provided by the Railroad Commission of Texas (RRC). Due to the staggering volume of this dataset—culminating in over 156 million rows across multiple fact tables spanning over 33 years—traditional spreadsheet applications completely lock up or truncate rows natively. This data engineering pipeline establishes an optimal, reproducible framework utilizing Power Query and the VertiPaq database engine to securely store, schema-optimize, and query massive data lakes without memory exhaustion or code corruption.
