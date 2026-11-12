@@ -1,3 +1,9 @@
+
+**Analyst:** Dennis P Johnson\
+**Dataset Size, Version 1:** 156,586,309 Rows (Fact Aggregated)\
+**Dataset Size, Version 2:** 77,212,240 Rows (Fact Single Table)\
+**Target Architecture:** Power BI Columnar VertiPaq Data Model 
+
 # Texas RRC Production Analytics Pipeline & Dashboard
 
 [📊 Click Here to View the Live Interactive Power BI Dashboard](https://app.powerbi.com/view?r=eyJrIjoiMzFmZDlkNmItYjdhZC00NDVlLThlZWItYzg3MjU4Y2JlMzRhIiwidCI6IjA4NmQ3ZjlmLWNmNTktNDFhZS04YmVmLTdjNDYxZjNkYmEzNSJ9)  
